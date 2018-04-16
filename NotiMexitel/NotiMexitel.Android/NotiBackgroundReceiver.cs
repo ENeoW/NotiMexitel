@@ -13,18 +13,12 @@ using Autofac;
 
 namespace NotiMexitel.Droid
 {
-   [Service]
-   class NotiService : Service
+   [BroadcastReceiver]
+   class NotiBackgroundReceiver : BroadcastReceiver
    {
       private static IContainer container { get; set; }
 
-      public override IBinder OnBind(Intent intent)
-      {
-         return null;
-      }
-
-      [return: GeneratedEnum]
-      public override StartCommandResult OnStartCommand(Intent intent, [GeneratedEnum] StartCommandFlags flags, int startId)
+      public override void OnReceive(Context context, Intent intent)
       {
          using (var scope = container.BeginLifetimeScope())
          {
@@ -32,10 +26,11 @@ namespace NotiMexitel.Droid
             var isChanged = notiRequest.GetMexitelNotification().Result;
             if (isChanged)
             {
-               
+
             }
-         }  
-         return StartCommandResult.NotSticky;
+         }
+         var am = (AlarmManager)context.GetSystemService(Context.AlarmService);
+         am.w
       }
    }
 }
