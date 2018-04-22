@@ -17,17 +17,17 @@ namespace NotiMexitel.Droid
 
          global::Xamarin.Forms.Forms.Init(this, bundle);
          LoadApplication(new App());
-         var pendingIntent = PendingIntent.GetActivity(this, 0, new Intent(this, typeof(MainActivity)), 0);
-         var intent = new Intent(this, typeof(NotiBackgroundReceiver));
-         pendingIntent = PendingIntent.GetBroadcast(this, 0, intent, PendingIntentFlags.UpdateCurrent);
-         var alarm = (AlarmManager)GetSystemService(Context.AlarmService);
-         alarm.SetRepeating(AlarmType.RtcWakeup, 0, AlarmManager.IntervalHalfHour, pendingIntent);
-      }
 
-      //private bool IsAlarmSet()
-      //{
-      //   return PendingIntent.GetBroadcast(this, 0, intent, PendingIntentFlags.NoCreate) != null;
-      //}
+         var panamaIntent = new Intent(this, typeof(NotiService));
+         var pendingIntent = PendingIntent.GetService(this, 0, panamaIntent, PendingIntentFlags.UpdateCurrent);
+                  
+         var intent = new Intent(this, typeof(NotiBackgroundReceiver));
+         var mexPendingIntent = PendingIntent.GetBroadcast(this, 0, intent, PendingIntentFlags.UpdateCurrent);
+
+         var alarm = (AlarmManager)GetSystemService(Context.AlarmService);
+         alarm.SetRepeating(AlarmType.RtcWakeup, 0, AlarmManager.IntervalFifteenMinutes, pendingIntent);
+         alarm.SetRepeating(AlarmType.RtcWakeup, 0, AlarmManager.IntervalHalfHour, mexPendingIntent);
+      }
    }
 }
 

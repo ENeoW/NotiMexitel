@@ -9,7 +9,7 @@ namespace NotiMexitel.Droid
    [BroadcastReceiver]
    class NotiBackgroundReceiver : BroadcastReceiver
    {
-      private static IContainer container { get; set; }
+      //private static IContainer container { get; set; }
       private static int notificationId = 0;
       private static NotiRequestService notiRequest = new NotiRequestService();
 
@@ -20,12 +20,11 @@ namespace NotiMexitel.Droid
          //var notiRequest = scope.Resolve<INotiRequest>();         
          try
          {
-            var am = (AlarmManager)context.GetSystemService(Context.AlarmService);
             var isChanged = notiRequest.GetMexitelNotification();
             if (isChanged)
-               BuildNotifation(context, "Ha habido un cambio en la página de avisos.", isCritial: true);
+               BuildNotifation(context, "Ha habido un cambio en la página de avisos de México.", isCritial: true);
             else
-               BuildNotifation(context, $"La página de avisos no ha cambiado.");
+               BuildNotifation(context, $"La página de avisos de México no ha cambiado.");
          }
          catch (Exception e)
          {
@@ -35,7 +34,7 @@ namespace NotiMexitel.Droid
                message += e.InnerException.Message + "\n";
                e = e.InnerException;
             }
-            BuildNotifation(context, message);
+            BuildNotifation(context, message, "Pagina de México");
          }
       }
 
