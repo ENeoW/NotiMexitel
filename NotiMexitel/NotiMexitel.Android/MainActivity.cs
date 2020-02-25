@@ -25,8 +25,8 @@ namespace NotiMexitel.Droid
          var mexPendingIntent = PendingIntent.GetBroadcast(this, 0, intent, PendingIntentFlags.UpdateCurrent);
 
          var alarm = (AlarmManager)GetSystemService(Context.AlarmService);
-         alarm.SetRepeating(AlarmType.RtcWakeup, 0, AlarmManager.IntervalFifteenMinutes, pendingIntent);
-         alarm.SetRepeating(AlarmType.RtcWakeup, 0, AlarmManager.IntervalHalfHour, mexPendingIntent);
+         //alarm.SetRepeating(AlarmType.RtcWakeup, 0, AlarmManager.IntervalFifteenMinutes, pendingIntent);
+         alarm.SetRepeating(AlarmType.RtcWakeup, 0, AlarmManager.IntervalFifteenMinutes, mexPendingIntent);
       }
    }
 }

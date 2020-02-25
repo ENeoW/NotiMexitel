@@ -6,47 +6,50 @@ namespace NotiMexitel
 {
    public class NotiRequestService //: INotiRequest
    {
-      const string Mexico = "https://embamex.sre.gob.mx/cuba/index.php/avisos/159-info-de-sc-citas-mexitel";
-      const string Panama = "http://200.46.78.75/portal_migracion_digital/views/visa_cuba.php";
+      const string mexico = "https://embamex.sre.gob.mx/cuba/index.php/avisos/";
+      const string avisos = "https://embamex.sre.gob.mx/cuba/index.php/avisos/182-aviso-importante";
 
       private static string oldPageMexico = string.Empty;
       private static string oldPagePanama = string.Empty;
 
       public bool GetMexitelNotification()
       {
-         return GetNotification(Mexico, nameof(Mexico), ref oldPageMexico);
+         return GetNotification();
       }
 
       public bool GetPanamaNotification()
       {
-         return GetNotification(Panama, nameof(Panama), ref oldPagePanama);
+         return false; // GetNotification(Panama, nameof(Panama), ref oldPagePanama);
       }
 
 
-      private bool GetNotification(string url, string target, ref string oldPage)
+      private bool GetNotification()
       {
-         bool result = false;
-         var currentPage = string.Empty;
          try
          {
             using (var httpClient = new HttpClient())
-               currentPage = httpClient.GetStringAsync(Mexico).Result;
+            {
+               var page = httpClient.GetStringAsync(mexico).Result;
+               for (int i = 183; i < 199; i++)
+               {
+                  if (page.Contains($"/cuba/index.php/avisos/{i}"))
+                  {
+                     return true;
+                  }
+               }
+               page = httpClient.GetStringAsync(avisos).Result;
+               if (!page.Contains("/cuba/images/stories/AvisoTurnos.png"))
+               {
+                  return true;
+               }
+            }
+            return false;
          }
          catch (Exception e)
          {
-            throw new Exception($"No se pudo acceder a la página de {target}, revise su conexión a internet");
+            throw new Exception($"Something wrong happens, {e.Message}");
          }
-         if (oldPage != currentPage)
-         {
-            if (string.IsNullOrWhiteSpace(oldPage))
-            {
-               oldPage = currentPage;
-               throw new Exception($"Se descargó la página de {target} para comparar");
-            }
-            result = true;
-            oldPage = currentPage;
-         }
-         return result;
+         
       }
    }
 }

@@ -52,7 +52,7 @@ namespace NotiMexitel.Droid
       private void BuildNotifation(Context context, string contentText, string title = "Panama", bool isCritial = false)
       {
          var pendingIntent = PendingIntent.GetActivity(context, 0, new Intent(context, typeof(MainActivity)), 0);
-         var notification = new Notification.Builder(context)
+         var notification = new Notification.Builder(context, "id")
                .SetContentIntent(pendingIntent)
                .SetSmallIcon(Resource.Drawable.icon)
                .SetContentTitle(title)
